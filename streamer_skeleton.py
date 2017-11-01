@@ -7,7 +7,6 @@ Get input from camera, perform some image processing frame-by-frame, and show th
 """
 
 import numpy as np
-from scipy import signal
 import cv2
 
 
