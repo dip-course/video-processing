@@ -31,6 +31,24 @@ def laplacianFilter(inputCaret):
     ])
     return linearFilter(inputCaret, convolution_kernel)
 
+def horizontalSobelFilter(inputCaret):
+    convolution_kernel = np.array([
+        [1., 0.,-1.],
+        [2., 0.,-2.],
+        [1., 0.,-1.]
+    ])
+    return linearFilter(inputCaret, convolution_kernel)
+
+def verticalSobelFilter(inputCaret):
+    convolution_kernel = np.array([
+        [1., 0.,-1.],
+        [2., 0.,-2.],
+        [1., 0.,-1.]
+    ])
+    convolution_kernel = convolution_kernel.T
+    return linearFilter(inputCaret, convolution_kernel)
+
+
 def normalizeProcessedImage(A):
     A = A - np.min(A)
     A = (A / np.max(A)) * 255.
@@ -40,7 +58,7 @@ def isKeyPressed(key):
     return cv2.waitKey(1) & 0xFF == ord(key)
 
 if __name__=='__main__':
-    processCaret = identityFilter
+    processCaret = verticalSobelFilter #identityFilter
     cap = cv2.VideoCapture(0)
     while(True):
         caret_ok, caret = cap.read() # caret: Numpy array containing current frame
