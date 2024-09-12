@@ -33,9 +33,15 @@ def laplacianFilter(inputCaret):
 
 def horizontalSobelFilter(inputCaret):
     convolution_kernel = np.array([
-        [1., 0.,-1.],
-        [2., 0.,-2.],
-        [1., 0.,-1.]
+        [-1., -2.,-1.],
+        [0., 0.,0.],
+        [1., 2.,1.]
+#        [-1., 0, 1.],
+#        [-2., 0, 2.],
+#        [-1., 0, 1.]
+#        [0., 0.,0],
+#        [0., 1.,0.],
+#        [0., 0.,0.]
     ])
     return linearFilter(inputCaret, convolution_kernel)
 
@@ -58,14 +64,30 @@ def isKeyPressed(key):
     return cv2.waitKey(1) & 0xFF == ord(key)
 
 if __name__=='__main__':
-    processCaret = verticalSobelFilter #identityFilter
+    #processCaret = verticalSobelFilter #identityFilter
+    processCaret = meanFilter
     cap = cv2.VideoCapture(0)
     while(True):
         caret_ok, caret = cap.read() # caret: Numpy array containing current frame
         if not caret_ok:
             continue
         caret_gray = cv2.cvtColor(caret, cv2.COLOR_BGR2GRAY)
-        caret_processed = processCaret(np.float32(caret_gray))
+        #
+        #caret_processed = meanFilter(np.float32(caret_gray))
+        caret_processed = verticalSobelFilter(np.float32(caret_gray))
+        #caret_processed_2 = horizontalSobelFilter(np.float32(caret_gray))
+        #caret_processed = np.abs(caret_processed_1) + np.abs(caret_processed_2)
+        #caret_processed = np.abs(laplacianFilter(np.float32(caret_gray)))
+        #caret_processed = 255 - caret_gray
+        #caret_processed = np.log(1 + caret_gray)
+        #caret_processed = caret_gray
+        grammes, sthles = caret_gray.shape
+        #threshold = 100
+        #for i in range(0, grammes, 1):
+        #    for j in range(0, sthles, 1):
+                #caret_processed[i, j] = 255 - caret_gray[i, j]
+                #caret_processed = caret_gray**
+        ###############################################################
         cv2.imshow('frame', normalizeProcessedImage(caret_processed))
         if isKeyPressed(' '):
             break
